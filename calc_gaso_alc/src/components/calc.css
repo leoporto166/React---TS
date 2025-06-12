@@ -11,10 +11,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: rgb(39, 46, 45);
 }
 
 .princ h1{
     margin-bottom: 50px;
+    color: white;
+}
+
+.princ img{
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    margin-bottom: 20px;
 }
 
 .form{
@@ -33,7 +42,7 @@
 .princ h2{
     font-size: 18px;
     margin-top: 10px;
-    background-color: black;
-    color: white;
+    background-color: rgb(66, 240, 50);
+    color: rgb(0, 0, 0);
     padding: 20px;
 }
