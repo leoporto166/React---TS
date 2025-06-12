@@ -1,5 +1,5 @@
-import { Aluno} from "./Components/Alunos"
-import type { AlunoProps  } from "./Components/Alunos"
+import { Aluno} from "./Components/alunos"
+import type { AlunoProps  } from "./Components/alunos"
 import { Header} from "./Components/header"
 import { useState } from "react";
 
