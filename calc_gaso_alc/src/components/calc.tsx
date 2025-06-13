@@ -1,6 +1,6 @@
 import { useState } from "react"
 import "./calc.css"
-import bomba from "../img/bomba.jpg"
+import bomba from "../Assets/bomba.jpg"
 
 
 interface CompPrps{
@@ -30,35 +30,53 @@ export function Calc() {
     if(precoAlc <= comp){
       setResult("É melhor abastecer com alcool")
     } else{
-      setResult("É melhor abastercer com gasolina")
+      setResult("É melhor abastecer com gasolina")
     }
   }
   return (
-        <div className="princ">
-            <h1>Calculdora de Gasolina ou Alcool</h1>
+    
+        <main className="container">
+            
             <img src={bomba}></img>
+            
+            <h1>Qual a melhor opção?</h1>
 
-            <div className="form">
+            <form>
+                <label htmlFor="">Alcool (preço por litro):</label>
                 <input
-                placeholder="Alcool"
+                placeholder="3,33"
+                type="number"
+                min="1"
+                step="0.01"
+                required
                 value={alc.valor}
                 onChange={(e) => setAlc({valor: (e.target.value)})}
                 ></input>
+
                 <br></br>
+
+                <label htmlFor="">Gasolina (preço por litro):</label>
                 <input
-                placeholder="Gasolina"
+                placeholder="6,66"
+                type="number"
+                min="1"
+                step="0.01"
+                required
                 value={gaso.valor}
                 onChange={(e) => setGaso({ valor: (e.target.value)})}
                 ></input>
+
                 <br></br>
-                <button onClick={calc}>Calcular</button>
-                </div>
+
+                
+            </form>
+            <button onClick={calc}>Calcular</button>
             
 
             {result &&(
                 <h2>{result}</h2>
             ) }
-      </div>
+      </main>
       
     
   )
