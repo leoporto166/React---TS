@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { FormEvent } from "react";
 import "./calc.css"
 import bomba from "../Assets/bomba.jpg"
 
@@ -17,18 +18,19 @@ export function Calc() {
   })
   const [result, setResult] = useState("")
 
-  function calc(){
-    const precoGaso = parseFloat(gaso.valor)
-    const precoAlc = parseFloat(alc.valor)
+  function calc(event: FormEvent){
+    event.preventDefault();
+    const precoGaso = Number(gaso.valor)
+    const precoAlc = Number(alc.valor)
 
     if(isNaN(precoGaso) || isNaN(precoAlc)){
-      setResult("Preencha os dois campos")
+      setResult("Preencha os dois campos com valores validos")
       return;
     }
 
     let comp = precoGaso * 0.7
-    if(precoAlc <= comp){
-      setResult("É melhor abastecer com alcool")
+    if(precoAlc < comp){
+      setResult("É melhor abastecer com álcool")
     } else{
       setResult("É melhor abastecer com gasolina")
     }
@@ -41,8 +43,8 @@ export function Calc() {
             
             <h1>Qual a melhor opção?</h1>
 
-            <form>
-                <label htmlFor="">Alcool (preço por litro):</label>
+            <form onSubmit={calc}>
+                <label htmlFor="">Álcool (preço por litro):</label>
                 <input
                 placeholder="3,33"
                 type="number"
@@ -68,14 +70,16 @@ export function Calc() {
 
                 <br></br>
 
-                
+                <button>Calcular</button>
             </form>
-            <button onClick={calc}>Calcular</button>
+            
             
 
+          <section className="result">
             {result &&(
                 <h2>{result}</h2>
             ) }
+          </section>
       </main>
       
     
