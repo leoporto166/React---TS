@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { FormEvent } from "react";
+import { useState, type FormEvent} from "react"
 import "./calc.css"
 import bomba from "../Assets/bomba.jpg"
 
