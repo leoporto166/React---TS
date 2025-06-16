@@ -1,4 +1,4 @@
-import { useState, type FormEvent, useEffect } from "react"
+import { useState, type FormEvent, useEffect, useRef, useMemo, useCallback } from "react"
 
 export function Listagem(){
     const [tarefa, setTarefa] = useState("")
@@ -7,6 +7,10 @@ export function Listagem(){
         estado: false,
         tarefa: ""
     })
+    const firstRender = useRef(true)
+    const inputRef = useRef<HTMLInputElement>(null)
+
+
 
     useEffect(() => {
 
@@ -17,34 +21,39 @@ export function Listagem(){
         }
     }, [])
 
-    function Adicionar(event: FormEvent){
-        event.preventDefault();
-
-        if(!tarefa){
-            alert("Preencha o campo")
+    useEffect(() => {
+        if(firstRender.current){
+            firstRender.current = false;
+            return;
         }
 
+        localStorage.setItem("33salvarTarefa", JSON.stringify(tarefas));
 
-        if(editar.estado){
-            SalvarEdicao();
-        }else{
-            setTarefas(prev => [...prev, tarefa]);localStorage.setItem("33salvarTarefa", JSON.stringify([...tarefas, tarefa]));
-        }
-        setTarefa("");
-        setEditar({estado: false, tarefa: ""})
+    }, [tarefas])
 
-        
-    }
+    const Adicionar = useCallback((event: FormEvent) => {
+            event.preventDefault();
+
+            if (!tarefa.trim()) {
+                alert("Preencha o campo");
+                return;
+            }
+
+            if (editar.estado) {
+                SalvarEdicao();
+            } else {
+                setTarefas(prev => [...prev, tarefa]);
+            }
+
+            setTarefa("");
+            setEditar({ estado: false, tarefa: "" });
+
+    }, [tarefa, editar.estado, editar.tarefa, SalvarEdicao]);
 
     function Excluir(item: string){
         const removeTask = tarefas.filter(t => t !== item)
 
-        setTarefas(removeTask)
-
-        localStorage.setItem("33salvarTarefa", JSON.stringify(removeTask))
-
-        
-
+        setTarefas(removeTask)   
     }
 
     function SalvarEdicao(){
@@ -61,10 +70,11 @@ export function Listagem(){
 
         setTarefa("")
 
-        localStorage.setItem("33salvarTarefa", JSON.stringify(todasTarefas))
     }
 
     function Editar(item: string){
+
+        inputRef.current?.focus();
         setTarefa(item)
         setEditar({
             estado: true,
@@ -72,11 +82,19 @@ export function Listagem(){
         })
 
     }
+
+    const contadorDeTarefas = useMemo(() => {
+        return tarefas.length
+    }, [tarefas])
     return(
         <main>
         <h1>
             Lista de Tarefas
         </h1>
+
+        <hr></hr>
+
+        <h3>Você tem {contadorDeTarefas} tarefas!</h3>
 
         <form action="" onSubmit={Adicionar}>
             <input type="text"
@@ -84,6 +102,7 @@ export function Listagem(){
             required
             value={tarefa}
             onChange={(e) => setTarefa(e.target.value)}
+            ref={inputRef}
             />
 
             <button>
