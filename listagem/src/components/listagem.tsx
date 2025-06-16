@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react"
+import { useState, type FormEvent, useEffect } from "react"
 
 export function Listagem(){
     const [tarefa, setTarefa] = useState("")
@@ -7,6 +7,15 @@ export function Listagem(){
         estado: false,
         tarefa: ""
     })
+
+    useEffect(() => {
+
+        const tarefasSalvas = localStorage.getItem("33salvarTarefa")
+
+        if(tarefasSalvas){
+            setTarefas(JSON.parse(tarefasSalvas))
+        }
+    }, [])
 
     function Adicionar(event: FormEvent){
         event.preventDefault();
@@ -19,10 +28,12 @@ export function Listagem(){
         if(editar.estado){
             SalvarEdicao();
         }else{
-            setTarefas(prev => [...prev, tarefa])
+            setTarefas(prev => [...prev, tarefa]);localStorage.setItem("33salvarTarefa", JSON.stringify([...tarefas, tarefa]));
         }
         setTarefa("");
         setEditar({estado: false, tarefa: ""})
+
+        
     }
 
     function Excluir(item: string){
@@ -30,12 +41,14 @@ export function Listagem(){
 
         setTarefas(removeTask)
 
+        localStorage.setItem("33salvarTarefa", JSON.stringify(removeTask))
+
         
 
     }
 
     function SalvarEdicao(){
-        const tarefaIndex = tarefas.findIndex(tarefa => editar.tarefa)
+        const tarefaIndex = tarefas.findIndex(t => t === editar.tarefa)
         const todasTarefas = [...tarefas]
 
         todasTarefas[tarefaIndex] = tarefa
@@ -47,6 +60,8 @@ export function Listagem(){
         })
 
         setTarefa("")
+
+        localStorage.setItem("33salvarTarefa", JSON.stringify(todasTarefas))
     }
 
     function Editar(item: string){
