@@ -1,12 +1,10 @@
-
+import {Gerador} from "./components/gerador"
 
 function App() {
   
 
   return (
-    <div>
-
-    </div>
+      <Gerador></Gerador>
   )
 }
 
