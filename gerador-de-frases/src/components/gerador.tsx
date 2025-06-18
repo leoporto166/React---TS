@@ -2,6 +2,8 @@
 import { useState } from "react"
 import "./gerador.css"
 
+import logo from "../assets/logo.png"
+
 interface FrasesProps{
     frase: string
 }
@@ -9,8 +11,8 @@ interface FrasesProps{
 export function Gerador(){
 
 
-    const[frasesdia, setFraseDia] = useState(false)
-    const[freasesmot, setFrasesMot] = useState(false)
+    const[frasesDia, setFraseDia] = useState(false)
+    const[frasesMot, setFrasesMot] = useState(false)
     const [fraseSorteada, setFraseSorteada] = useState("")
 
 
@@ -28,32 +30,46 @@ export function Gerador(){
 
     ]
 
+    
+
     function sortear(frases: FrasesProps[]){
         const index = Math.floor(Math.random() * frases.length)
-        if(frases[index] === frases[index]){
-                    return frases[index].frase
-                }
         return frases[index].frase
 
         
         
     }
+    function gerarFrase(){
+        if(frasesDia === true){
+            setFraseSorteada(sortear(BomDia));
+        } else if(frasesMot === true){
+            setFraseSorteada(sortear(Motivacao));
+        }
+    }
     return(
-        <div>
-            <button onClick={() => {
-                setFrasesMot(false);
-                setFraseDia(true);
-                setFraseSorteada(sortear(BomDia));
-            }}>Bom dia</button>
+        <div className="container">
 
-            <button onClick={() => {
-                setFraseDia(false);
-                setFrasesMot(true);
-                setFraseSorteada(sortear(Motivacao));
-            }}>Motivação</button>
+            <div className="logo">
+               <img src={logo} alt="logo"></img>
+            </div>
+            <div className="title">
+                <h1>Categorias</h1>
+            </div>
+            <section className="category-area">
+                <button className={`category-button ${frasesDia ? "active" : ""}`} onClick={() => {
+                    setFrasesMot(false);
+                    setFraseDia(true);
+                }}>Bom dia</button>
+                <button className={`category-button ${frasesMot ? "active" : ""}`} onClick={() => {
+                    setFraseDia(false);
+                    setFrasesMot(true);
+                }}>Motivação</button>
+            </section>
 
-            {frasesdia && (<h1>{fraseSorteada}</h1>)}
-            {freasesmot && (<h1>{fraseSorteada}</h1>)}
+            <button onClick={gerarFrase} className="gerador">Gerar Frase</button>
+
+       
+            {fraseSorteada !== "" && <p className="frase">"{fraseSorteada}"</p>}
         </div>
     )
 }
